@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import pkg from "./package.json";
 import dayjs from "dayjs";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { transformWrapperEnv } from "./src/utils/EnvUtils";
 
 const pathResolve = (dir: string) => resolve(process.cwd(), ".", dir);
@@ -85,6 +86,14 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
       },
     },
-    plugins: [vue()],
+    plugins: [
+      createSvgIconsPlugin({
+        // 指定需要缓存的图标文件夹
+        iconDirs: [pathResolve("src/assets/svg")],
+        // 指定symbolId格式
+        symbolId: "icon-[dir]-[name]",
+      }),
+      vue(),
+    ],
   };
 };

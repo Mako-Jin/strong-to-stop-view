@@ -5,6 +5,7 @@
 
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
+  <svg-icon name="user" />
 </template>
 
 <style lang="less">
