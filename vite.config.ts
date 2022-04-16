@@ -65,6 +65,26 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       __INTLIFY_PROD_DEVTOOLS__: false,
       __APP_INFO__: JSON.stringify(__APP_INFO__),
     },
+    css: {
+      //* css模块化
+      modules: {
+        // css模块化 文件以.module.[css|less|scss]结尾
+        generateScopedName: "[name]__[local]___[hash:base64:5]",
+        hashPrefix: "prefix",
+      },
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            // 用于全局导入，以避免需要单独导入每个样式文件。
+            // reference:  避免重复引用
+            hack: `true; @import (reference) "${resolve(
+              "src/styles/config.less"
+            )}";`,
+          },
+          javascriptEnabled: true,
+        },
+      },
+    },
     plugins: [vue()],
   };
 };
