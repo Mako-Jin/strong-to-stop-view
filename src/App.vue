@@ -6,6 +6,7 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <svg-icon name="user" />
+  <div>项目名称 : {{ $t("project.title") }}</div>
 </template>
 
 <style lang="less">

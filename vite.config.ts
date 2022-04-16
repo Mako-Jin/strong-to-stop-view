@@ -6,19 +6,14 @@ import dayjs from "dayjs";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import { transformWrapperEnv } from "./src/utils/EnvUtils";
 
-const pathResolve = (dir: string) => resolve(process.cwd(), ".", dir);
+const root = process.cwd();
+
+const pathResolve = (dir: string) => resolve(root, ".", dir);
 
 const { dependencies, devDependencies, name, version } = pkg;
 
-const __APP_INFO__ = {
-  pkg: { dependencies, devDependencies, name, version },
-  lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-};
-
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv): UserConfig => {
-  const root = process.cwd();
-
   const env = transformWrapperEnv(loadEnv(mode, root));
   const { VITE_PORT, VITE_PUBLIC_PATH, VITE_OUTPUT_DIR, VITE_DROP_CONSOLE } =
     env;
@@ -38,12 +33,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     // 默认:VITE_  配置为其他不生效，未研究。
     // envPrefix: "STS_", // 以 envPrefix 开头的环境变量会通过 import.meta.env 暴露在你的客户端源码中。不能为“”
     resolve: {
-      alias: [
-        {
-          find: /\/@\//,
-          replacement: pathResolve("src") + "/",
-        },
-      ],
+      alias: resolveAlias,
     },
     server: {
       host: true, // 指定服务器应该监听哪个 IP 地址。 如果将此设置为 0.0.0.0 或者 true 将监听所有地址，包括局域网和公网地址。
@@ -86,14 +76,32 @@ export default ({ mode }: ConfigEnv): UserConfig => {
         },
       },
     },
-    plugins: [
-      createSvgIconsPlugin({
-        // 指定需要缓存的图标文件夹
-        iconDirs: [pathResolve("src/assets/svg")],
-        // 指定symbolId格式
-        symbolId: "icon-[dir]-[name]",
-      }),
-      vue(),
-    ],
+    plugins: plugins,
   };
 };
+
+const resolveAlias = [
+  {
+    find: "vue-i18n",
+    replacement: "vue-i18n/dist/vue-i18n.cjs.js",
+  },
+  {
+    find: /\/@\//,
+    replacement: pathResolve("src") + "/",
+  },
+];
+
+const __APP_INFO__ = {
+  pkg: { dependencies, devDependencies, name, version },
+  lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+};
+
+const plugins = [
+  createSvgIconsPlugin({
+    // 指定需要缓存的图标文件夹
+    iconDirs: [pathResolve("src/assets/svg")],
+    // 指定symbolId格式
+    symbolId: "icon-[dir]-[name]",
+  }),
+  vue(),
+];
