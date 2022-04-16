@@ -1,4 +1,5 @@
 import { createI18n, LocaleMessages, VueMessageType } from "vue-i18n";
+import { useUnInstalledLocaleStore } from "../store/modules/localeStore";
 
 const files = import.meta.globEager("./lang/*.ts");
 
@@ -9,8 +10,10 @@ Object.keys(files).forEach((c: string) => {
   messages[moduleName] = module;
 });
 
+const localeStore = useUnInstalledLocaleStore();
+
 const i18n = createI18n({
-  locale: localStorage.getItem("lang") || "zh_CN",
+  locale: localeStore.getCurrentLocale,
   messages,
 });
 

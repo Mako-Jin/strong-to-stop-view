@@ -1,4 +1,5 @@
-import { ViteEnv } from "../model/EnvModel";
+import { ViteEnv } from "/@/model/EnvModel";
+import pkg from "../../package.json";
 
 /**
  * 转换并重新封装环境配置文件的配置
@@ -26,4 +27,16 @@ export function transformWrapperEnv(
     ret[envName] = realName;
   }
   return ret;
+}
+
+/**
+ * 获取存储key的公共前缀
+ * @returns
+ */
+export function getStorageShortName() {
+  const appGlobalTitle = import.meta.env.VITE_APP_GLOBAL_TITLE.replaceAll(
+    " ",
+    "-"
+  );
+  return `${appGlobalTitle}${`-${pkg.version}`}-`.toUpperCase();
 }
