@@ -1,6 +1,6 @@
 import "virtual:svg-icons-register";
 // ant-design-vue 基础样式
-import "ant-design-vue/dist/antd.css";
+import "ant-design-vue/dist/antd.less";
 
 import { createApp } from "vue";
 import App from "./App.vue";

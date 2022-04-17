@@ -89,7 +89,7 @@ module.exports = defineConfig({
     "no-multiple-empty-lines": "warn", // 禁止出现多行空行
     semi: [0], // 行末必须加分号
     "space-before-blocks": "warn", // 强制在块之前使用一致的空格
-    "space-before-function-paren": ["warn", "never"], // 强制在function的左括号之前使用一致的空格
+    // "space-before-function-paren": ["warn", "never"], // 强制在function的左括号之前使用一致的空格
     "space-in-parens": "warn", // 强制在圆括号内使用一致的空格
     "space-infix-ops": "warn", // 要求操作符周围有空格
     "space-unary-ops": "warn", // 强制在一元操作符前后使用一致的空格
