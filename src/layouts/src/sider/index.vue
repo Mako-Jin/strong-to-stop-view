@@ -1,5 +1,10 @@
 <template>
-  <a-layout-sider class="sts-layout-sider">
+  <a-layout-sider
+    class="sts-layout-sider"
+    :collapsed="getCollapsed"
+    :trigger="null"
+    collapsible
+  >
     <div class="logo"></div>
     我是侧边栏
   </a-layout-sider>
@@ -7,12 +12,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useMenuSetting } from "/@/hooks/useMenuSetting";
 
 export default defineComponent({
   name: "StsLayoutSider",
   components: {},
   setup() {
-    return {};
+    const { getCollapsed } = useMenuSetting();
+
+    return {
+      getCollapsed,
+    };
   },
 });
 </script>
