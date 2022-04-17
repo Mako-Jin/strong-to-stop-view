@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { PageEnum } from "/@/enums/PageEnums";
+import { Layout } from "/@/layouts";
 
 /**
  * 首页
@@ -33,7 +34,7 @@ export const LoginRouter: RouteRecordRaw = {
 export const DefaultHomeRouter: RouteRecordRaw = {
   path: "/index",
   name: "DefaultHome",
-  component: () => import("/@/views/system/index.vue"),
+  component: Layout,
   meta: {
     title: "默认首页",
     icon: "home",
