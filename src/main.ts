@@ -1,4 +1,6 @@
 import "virtual:svg-icons-register";
+// ant-design-vue 基础样式
+import "ant-design-vue/dist/antd.css";
 
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -8,6 +10,8 @@ import { registerGlobComponents } from "/@/components";
 import i18n from "/@/locales";
 
 import { router } from "/@/router";
+
+import Antd from "ant-design-vue";
 
 const app = createApp(App);
 
@@ -22,5 +26,8 @@ app.use(i18n);
 
 // 全局加载router
 app.use(router);
+
+// 全局引入ant-design-vue
+app.use(Antd);
 
 app.mount("#app");

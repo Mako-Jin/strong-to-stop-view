@@ -1,4 +1,6 @@
-<template>首页</template>
+<template>
+  <a-button type="primary">ant-design-vue</a-button>
+</template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
