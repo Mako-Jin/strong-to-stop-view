@@ -6,11 +6,14 @@ export function useMenuSetting() {
 
   // 侧边菜单是否折叠
   const getCollapsed = computed(() => menuStore.getCollapsed);
-  // 侧边菜单栏宽度
-  // const getMenuWidth = computed(() => menuStore.getMenuWidth);
+  // 菜单数据来源
+  const getMenuSource = computed(() => menuStore.getMenuSource);
 
   const setCollapsed = (collapsed: boolean) =>
     menuStore.setCollapsed(collapsed);
+
+  const setMenuSource = (menuSource: string) =>
+    menuStore.setMenuSource(menuSource);
 
   const toggleCollapsed = () => {
     setCollapsed(!unref(getCollapsed));
@@ -18,8 +21,9 @@ export function useMenuSetting() {
 
   return {
     getCollapsed,
-    // getMenuWidth,
+    getMenuSource,
 
     toggleCollapsed,
+    setMenuSource,
   };
 }

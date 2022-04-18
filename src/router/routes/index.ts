@@ -63,3 +63,21 @@ export const routes: RouteRecordRaw[] = [
   DefaultHomeRouter,
   PageNotFoundRouter,
 ];
+
+const modules = import.meta.globEager("./**/*.ts");
+
+const routeModuleList: RouteRecordRaw[] = [];
+
+Object.keys(modules).forEach((key) => {
+  const mod = modules[key].default || {};
+  const modList = Array.isArray(mod) ? [...mod] : [mod];
+  routeModuleList.push(...modList);
+});
+
+/**
+ * 动态路由
+ */
+export const asyncRoutes: RouteRecordRaw[] = [
+  ...routeModuleList,
+  PageNotFoundRouter,
+];
