@@ -7,7 +7,7 @@ const SystemRouter: RouteRecordRaw = {
   name: "Tools",
   component: Layout,
   meta: {
-    title: "router.tools.title",
+    title: "tools.title",
     icon: "setting",
     position: MenuPosition.FOOTER,
   },
@@ -17,8 +17,8 @@ const SystemRouter: RouteRecordRaw = {
       name: "FileMgr",
       component: () => import("/@/views/file/index.vue"),
       meta: {
-        title: "router.tools.file.title",
-        icon: "file_mgr",
+        title: "tools.file.title",
+        icon: "file-mgr",
         position: MenuPosition.FOOTER,
       },
     },

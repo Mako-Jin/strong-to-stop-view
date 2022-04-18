@@ -6,34 +6,28 @@
     collapsible
   >
     <div class="logo"></div>
-    <sts-sider-menu />
+    <sts-layout-menu theme="dark" menuMode="inline" />
   </a-layout-sider>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useMenuSetting } from "/@/hooks/useMenuSetting";
-import StsSiderMenu from "../menu/index.vue";
-import { menuStrategyFactory } from "/@/service/menuService";
+import StsLayoutMenu from "../menu/index.vue";
 
 export default defineComponent({
   name: "StsLayoutSider",
   components: {
-    StsSiderMenu,
+    StsLayoutMenu,
   },
   setup() {
     const { getCollapsed } = useMenuSetting();
 
     return {
       getCollapsed,
-      getMenuList,
     };
   },
 });
-
-function getMenuList() {
-  return menuStrategyFactory.call();
-}
 </script>
 
 <style lang="less">
