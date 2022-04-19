@@ -2,10 +2,7 @@
   <a-menu :mode="menuMode" :theme="theme">
     <template v-for="item in routes" :key="item.path">
       <template v-if="menuHasOneChildren(item) && !item.meta.hidden">
-        <sts-menu-item
-          :menu="item.children[0]"
-          :onlyShowIcon="item.children[0]"
-        />
+        <sts-menu-item :menu="item.children[0]" :onlyShowIcon="onlyShowIcon" />
       </template>
       <template v-else-if="item.children">
         <sts-sub-menu

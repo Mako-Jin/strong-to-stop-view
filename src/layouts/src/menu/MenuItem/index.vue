@@ -4,7 +4,13 @@
       <svg-icon :name="menu.meta && menu.meta.icon" />
     </template>
     <router-link :to="menu.path">
-      <svg-icon v-if="onlyShowIcon && menu.meta.icon" :name="menu.meta.icon" />
+      <div v-if="onlyShowIcon && menu.meta.icon">
+        <a-tooltip :title="$t(menu.meta.title)" color="blue">
+          <a-button type="text" shape="circle">
+            <template #icon><svg-icon :name="menu.meta.icon" /></template>
+          </a-button>
+        </a-tooltip>
+      </div>
       <span v-else>
         {{ menu.meta && $t(menu.meta.title) }}
       </span>
@@ -30,7 +36,13 @@ export default defineComponent({
     },
   },
   setup() {
-    return {};
+    const getPopupContainer = (trigger: HTMLElement) => {
+      return trigger.parentElement;
+    };
+
+    return {
+      getPopupContainer,
+    };
   },
 });
 </script>
