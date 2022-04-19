@@ -1,7 +1,12 @@
 <template>
   <div class="login-container">
     <div class="form-container">
-      <a-form class="login-form" :model="loginFormState" :rules="rules">
+      <a-form
+        class="login-form"
+        :model="loginFormState"
+        :rules="rules"
+        @finish="handleLogin"
+      >
         <span class="login-form-header">
           {{ $t("login.form.title") }}
         </span>
@@ -76,6 +81,7 @@ import type { Rule } from "ant-design-vue/es/form";
 import { defineComponent, reactive, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { LoginModel } from "/@/model/UserModel";
+import { loginByUsernamePassword } from "/@/service/loginService";
 
 export default defineComponent({
   name: "Login",
@@ -114,10 +120,15 @@ export default defineComponent({
       ],
     };
 
+    const handleLogin = async (values: LoginModel) => {
+      await loginByUsernamePassword(values);
+    };
+
     return {
       loginFormState,
       showPassword,
       rules,
+      handleLogin,
     };
   },
 });
