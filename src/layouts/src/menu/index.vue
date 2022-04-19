@@ -2,17 +2,18 @@
   <a-menu :mode="menuMode" :theme="theme">
     <template v-for="item in routes" :key="item.path">
       <template v-if="menuHasOneChildren(item) && !item.meta.hidden">
-        <a-menu-item :key="item.children[0].path">
-          <template #icon>
-            <svg-icon :name="item.meta && item.meta.icon" />
-          </template>
-          <router-link :to="item.children[0].path">
-            {{ item.children[0].meta && $t(item.children[0].meta.title) }}
-          </router-link>
-        </a-menu-item>
+        <sts-menu-item
+          :menu="item.children[0]"
+          :onlyShowIcon="item.children[0]"
+        />
       </template>
       <template v-else-if="item.children">
-        <sts-sub-menu :key="item.path" :menu="item" />
+        <sts-sub-menu
+          :key="item.path"
+          :menu="item"
+          :onlyShowIcon="onlyShowIcon"
+          :onlyShowChild="onlyShowChild"
+        />
       </template>
     </template>
   </a-menu>
@@ -20,32 +21,41 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { MenuMode, MenuPosition } from "/@/enums/MenuEnums";
+import { MenuMode } from "/@/enums/MenuEnums";
 import { ThemeType } from "/@/enums/ThemeEnums";
-import { menuStrategyFactory } from "/@/service/menuService";
 import StsSubMenu from "./SubMenu/index.vue";
+import StsMenuItem from "./MenuItem/index.vue";
 import { RouteRecordRaw } from "vue-router";
 
 export default defineComponent({
   name: "StsLayoutMenu",
   components: {
     StsSubMenu,
+    StsMenuItem,
   },
   props: {
     theme: {
       type: [String] as PropType<ThemeType>,
-      default: ThemeType.DARK,
+      default: ThemeType.LIGHT,
     },
     menuMode: {
       type: [String] as PropType<MenuMode>,
       default: MenuMode.DEFAULT,
     },
+    routes: {
+      type: Array as PropType<RouteRecordRaw[]>,
+      default: () => [],
+    },
+    onlyShowIcon: {
+      type: Boolean,
+      default: false,
+    },
+    onlyShowChild: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
-    const routes = getMenuList().filter(
-      (menu) => menu.meta && menu.meta.position === MenuPosition.SIDER
-    );
-
     const menuHasOneChildren = (menu: RouteRecordRaw): boolean => {
       if (!menu.children) {
         return false;
@@ -55,15 +65,10 @@ export default defineComponent({
     };
 
     return {
-      routes,
       menuHasOneChildren,
     };
   },
 });
-
-function getMenuList() {
-  return menuStrategyFactory.call();
-}
 </script>
 
 <style lang="less"></style>

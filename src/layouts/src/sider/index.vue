@@ -6,25 +6,38 @@
     collapsible
   >
     <div class="logo"></div>
-    <sts-layout-menu theme="dark" menuMode="inline" />
+    <sts-layout-menu theme="dark" menuMode="inline" :routes="routes" />
   </a-layout-sider>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import { useMenuSetting } from "/@/hooks/useMenuSetting";
 import StsLayoutMenu from "../menu/index.vue";
+import { MenuPosition } from "/@/enums/MenuEnums";
+import { RouteRecordRaw } from "vue-router";
 
 export default defineComponent({
   name: "StsLayoutSider",
   components: {
     StsLayoutMenu,
   },
-  setup() {
+  props: {
+    menus: {
+      type: Array as PropType<RouteRecordRaw[]>,
+      default: () => [],
+    },
+  },
+  setup(props) {
     const { getCollapsed } = useMenuSetting();
+
+    const routes = props.menus.filter(
+      (menu) => menu.meta && menu.meta.position === MenuPosition.SIDER
+    );
 
     return {
       getCollapsed,
+      routes,
     };
   },
 });
