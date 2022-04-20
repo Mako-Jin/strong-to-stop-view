@@ -1,4 +1,4 @@
-import { RoleState } from "./RoleModel";
+import { RoleModel, RoleState } from "./RoleModel";
 
 export interface LoginModel {
   username: string;
@@ -13,6 +13,7 @@ export interface UserModel {
   avatar: string;
   phoneNum: string;
   emailAddress: string;
+  roles?: RoleModel[];
 }
 
 export interface UserState {

@@ -17,3 +17,23 @@ export const SIDE_MENU_COLLAPSED_KEY = "Side_Menu_Collapsed";
  * 菜单列表数据来源
  */
 export const MENU_LIST_COME_FROM_KEY = "Menu_List_Come_from";
+
+/**
+ * access token
+ */
+export const WEB_ACCESS_TOKEN_KEY = "Web_Access_Token";
+
+/**
+ * access token
+ */
+export const WEB_REFRESH_TOKEN_KEY = "Web_Refresh_Token";
+
+/**
+ * 用户信息
+ */
+export const USER_INFO_KEY = "User_Info";
+
+/**
+ * 角色信息
+ */
+export const ROLES_LIST_INFO_KEY = "Roles_List_Info";

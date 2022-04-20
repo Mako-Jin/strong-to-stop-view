@@ -9,3 +9,10 @@ import httpRequest from "/@/utils/HttpUtils";
 export const loginApi = (params: LoginModel) => {
   return httpRequest.POST("login", params);
 };
+
+/**
+ * 获取当前用户信息
+ */
+export function getUserInfoApi() {
+  return httpRequest.GET("auth/v1/current-user");
+}
