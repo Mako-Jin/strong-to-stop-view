@@ -1,20 +1,57 @@
 import { ContentTypeEnum, RequestMethodEnum } from "/@/enums/httpEnums";
 import qs from "qs";
-import { useUnInstalledUserStore } from "../store/modules/userStore";
+import { useUnInstalledUserStore } from "/@/store/modules/userStore";
+import { message } from "ant-design-vue";
+import i18n from "/@/locales";
+import { ResultModel } from "/@/model/HttpModel";
 
 class HttpRequest {
-  private baseURL: string;
-  private readonly defaultOption?: RequestInit;
+  /**
+   * 请求超时时间
+   */
+  private readonly options?: RequestInit;
 
-  constructor(url: string, option?: RequestInit) {
+  private baseURL: string;
+
+  private t = i18n.global.t;
+
+  /**
+   * 请求超时时间
+   */
+  private timeout: number;
+
+  /**
+   * token前缀
+   */
+  private tokenPrefix: string;
+
+  constructor(
+    url: string,
+    defaultOption?: RequestInit,
+    tokenPrefix = "SanMako",
+    timeout = 2000
+  ) {
     this.baseURL = url;
-    this.defaultOption = option;
+    this.options = defaultOption;
+    this.timeout = timeout;
+    this.tokenPrefix = tokenPrefix;
   }
 
+  /**
+   * 所有地址加公共前缀
+   * @param url
+   * @returns
+   */
   private preHandleUrl = (url: string) => {
     return `${this.baseURL}${url}`;
   };
 
+  /**
+   * 请求地址问号拼接参数并加时间戳
+   * @param url
+   * @param params
+   * @returns
+   */
   private preHandleParam = (url: string, params: any = {}) => {
     url += url.includes("?") ? "&" : "?";
     // 拼接时间戳
@@ -23,6 +60,11 @@ class HttpRequest {
     return url;
   };
 
+  /**
+   * 封装form-data参数
+   * @param options
+   * @returns
+   */
   private wrapFormData = (options: any = {}) => {
     const formData = new FormData();
     for (const key of Object.keys(options)) {
@@ -32,23 +74,20 @@ class HttpRequest {
     return formData;
   };
 
+  /**
+   * 获取认证token
+   * @returns
+   */
   private getAccessToken = (): string => {
     const accessToken = useUnInstalledUserStore().getAccessToken;
-    return accessToken ? `${"SanMako "}${accessToken}` : "";
+    return accessToken ? `${this.tokenPrefix}${" "}${accessToken}` : "";
   };
 
-  private checkStatus(response: Response) {
-    if (response.status >= 200 && response.status < 300) {
-      // 响应成功
-      return response;
-    } else if (response.status === 500) {
-      return response;
-    } else if (response.status === 403) {
-      return response;
-    }
-    throw new Error(response.statusText);
-  }
-
+  /**
+   * 获取响应结果
+   * @param response
+   * @returns
+   */
   private async parseResult(response: Response) {
     const contentType = response.headers.get("Content-Type");
     if (contentType !== null) {
@@ -117,7 +156,7 @@ class HttpRequest {
   }
 
   /**
-   * put请求
+   * delete请求
    */
   async DELETE<P = {}>(url: string, params?: P, options?: RequestInit) {
     url = this.preHandleUrl(url);
@@ -161,7 +200,7 @@ class HttpRequest {
     let opt = {
       method: RequestMethodEnum.POST,
       headers: {
-        "Content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "Content-type": ContentTypeEnum.FORM_URLENCODED,
         smk_Authorization: this.getAccessToken(),
       },
       body: qs.stringify(params),
@@ -170,29 +209,61 @@ class HttpRequest {
     return this.toFetch(url, opt);
   }
 
+  /**
+   * 基础请求
+   * @param url
+   * @param options
+   * @returns
+   */
   async toFetch(url: string, options?: RequestInit) {
-    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    message.loading({
+      content: this.t("http.status.pending"),
+      duration: 0,
+      key: url,
+    });
+    // fetch 取消请求
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.timeout);
     try {
-      const opt = Object.assign({}, this.defaultOption || {}, options || {});
+      const opt = Object.assign({}, this.options || {}, options || {}, {
+        signal: controller.signal,
+      });
       const response = await fetch(url, opt);
       clearTimeout(timeoutId);
-      return await this.processResult(response);
-    } catch (error) {
+      const result: ResultModel = await this.parseResult(response);
+      if (!response.ok) {
+        message.error({
+          content: result.msg,
+          key: url,
+          duration: 2,
+        });
+        return;
+      }
+      message.success({ content: result.msg, key: url, duration: 2 });
+      return result.data;
+    } catch (error: any) {
+      const errorMessage = this.dealError(error);
       clearTimeout(timeoutId);
-      Promise.reject(error);
+      message.error({ content: errorMessage, key: url, duration: 2 });
     }
   }
 
-  private async processResult(response: Response) {
-    const result = this.checkStatus(response);
-    return this.parseResult(result);
+  private dealError(error: any) {
+    let errorMessage = "";
+    switch (error.code) {
+      case 20:
+        errorMessage = this.t("http.error.timeout");
+        break;
+      case 401:
+        errorMessage = "认证异常";
+        break;
+      default:
+        errorMessage = this.t("http.error.unknown");
+        break;
+    }
+    return errorMessage;
   }
 }
-
-/**
- * fetch取消请求
- */
-const controller = new AbortController();
 
 /**
  * fetch请求默认的配置
@@ -238,11 +309,11 @@ const defaultOption: RequestInit = {
   // keepalive属性用于页面卸载时，告诉浏览器在后台保持连接，继续发送数据
   keepalive: false,
   // signal属性指定一个 AbortSignal 实例，用于取消fetch()请求
-  signal: controller.signal,
+  // signal: this.controller.signal,
 };
 
 const baseURL = import.meta.env.VITE_REST_BASE_URL;
+const timeout = import.meta.env.VITE_REQUEST_TIMEOUT;
+const tokenPrefix = import.meta.env.VITE_TOKEN_PREFIX;
 
-const httpRequest = new HttpRequest(baseURL, defaultOption);
-
-export default httpRequest;
+export default new HttpRequest(baseURL, defaultOption, tokenPrefix, timeout);
