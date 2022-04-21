@@ -78,9 +78,12 @@ class HttpRequest {
    * 获取认证token
    * @returns
    */
-  private getAccessToken = (): string => {
-    const accessToken = useUnInstalledUserStore().getAccessToken;
-    return accessToken ? `${this.tokenPrefix}${" "}${accessToken}` : "";
+  private getAccessToken = (withToken = true): string => {
+    if (withToken) {
+      const accessToken = useUnInstalledUserStore().getAccessToken;
+      return accessToken ? `${this.tokenPrefix}${" "}${accessToken}` : "";
+    }
+    return "";
   };
 
   /**
@@ -108,12 +111,17 @@ class HttpRequest {
   /**
    * get请求
    */
-  async GET<P = {}>(url: string, params?: P, options?: RequestInit) {
+  async GET<P = {}>(
+    url: string,
+    params?: P,
+    options?: RequestInit,
+    withToken = true
+  ) {
     const urlAddress = this.preHandleParam(this.preHandleUrl(url), params);
     let opt = {
       method: RequestMethodEnum.GET,
       headers: {
-        smk_Authorization: this.getAccessToken(),
+        smk_Authorization: this.getAccessToken(withToken),
       },
     };
     opt = Object.assign(opt, options);
@@ -123,14 +131,19 @@ class HttpRequest {
   /**
    * post请求
    */
-  async POST<P = {}>(url: string, params?: P, options?: RequestInit) {
+  async POST<P = {}>(
+    url: string,
+    params?: P,
+    options?: RequestInit,
+    withToken = true
+  ) {
     url = this.preHandleUrl(url);
     let opt = {
       method: RequestMethodEnum.POST,
       // credentials: "include",
       headers: {
         "Content-Type": ContentTypeEnum.JSON,
-        smk_Authorization: this.getAccessToken(),
+        smk_Authorization: this.getAccessToken(withToken),
       },
       body: JSON.stringify(params),
     };
@@ -141,13 +154,18 @@ class HttpRequest {
   /**
    * put请求
    */
-  async PUT<P = {}>(url: string, params?: P, options?: RequestInit) {
+  async PUT<P = {}>(
+    url: string,
+    params?: P,
+    options?: RequestInit,
+    withToken = true
+  ) {
     url = this.preHandleUrl(url);
     let opt = {
       method: RequestMethodEnum.PUT,
       headers: {
         "Content-Type": ContentTypeEnum.JSON,
-        smk_Authorization: this.getAccessToken(),
+        smk_Authorization: this.getAccessToken(withToken),
       },
       body: JSON.stringify(params),
     };
@@ -158,13 +176,18 @@ class HttpRequest {
   /**
    * delete请求
    */
-  async DELETE<P = {}>(url: string, params?: P, options?: RequestInit) {
+  async DELETE<P = {}>(
+    url: string,
+    params?: P,
+    options?: RequestInit,
+    withToken = true
+  ) {
     url = this.preHandleUrl(url);
     let opt = {
       method: RequestMethodEnum.DELETE,
       headers: {
         "Content-Type": ContentTypeEnum.JSON,
-        smk_Authorization: this.getAccessToken(),
+        smk_Authorization: this.getAccessToken(withToken),
       },
       body: JSON.stringify(params),
     };
@@ -175,12 +198,17 @@ class HttpRequest {
   /**
    * 上传
    */
-  async UPLOAD<P = {}>(url: string, params?: P, options?: RequestInit) {
+  async UPLOAD<P = {}>(
+    url: string,
+    params?: P,
+    options?: RequestInit,
+    withToken = true
+  ) {
     url = this.preHandleUrl(url);
     let opt = {
       method: RequestMethodEnum.POST,
       headers: {
-        smk_Authorization: this.getAccessToken(),
+        smk_Authorization: this.getAccessToken(withToken),
       },
       body: this.wrapFormData(params),
     };
@@ -196,12 +224,17 @@ class HttpRequest {
   /**
    * form表单
    */
-  async form<P = {}>(url: string, params?: P, options?: RequestInit) {
+  async form<P = {}>(
+    url: string,
+    params?: P,
+    options?: RequestInit,
+    withToken = true
+  ) {
     let opt = {
       method: RequestMethodEnum.POST,
       headers: {
         "Content-type": ContentTypeEnum.FORM_URLENCODED,
-        smk_Authorization: this.getAccessToken(),
+        smk_Authorization: this.getAccessToken(withToken),
       },
       body: qs.stringify(params),
     };

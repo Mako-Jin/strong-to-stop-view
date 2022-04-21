@@ -18,5 +18,6 @@ export async function dynamicAddRoute() {
     router.addRoute(PageNotFoundRouter as unknown as RouteRecordRaw);
     routerStore.setIsDynamicRouteLoaded(true);
   }
-  router.replace(PageEnum.DEFAULT_HOME);
+  const toPath = router.currentRoute.value.redirectedFrom?.fullPath;
+  router.replace(toPath ? toPath : PageEnum.DEFAULT_HOME);
 }

@@ -7,7 +7,7 @@ import httpRequest from "/@/utils/HttpUtils";
  * @returns
  */
 export const loginApi = (params: LoginModel) => {
-  return httpRequest.POST("login", params);
+  return httpRequest.POST("login", params, {}, false);
 };
 
 /**
@@ -21,5 +21,5 @@ export function getUserInfoApi() {
  * 刷新token
  */
 export function refreshTokenApi(params: TokenModel) {
-  return httpRequest.POST("auth/v1/token-refresh", params);
+  return httpRequest.POST("auth/v1/token-refresh", params, {}, false);
 }

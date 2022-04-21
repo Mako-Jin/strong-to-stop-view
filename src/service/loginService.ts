@@ -5,6 +5,11 @@ import { dynamicAddRoute } from "./routerService";
 import { getUserInfo } from "./userService";
 import { loginApi, refreshTokenApi } from "/@/apis/loginApi";
 import { LoginModel } from "/@/model/UserModel";
+import { LocalStorage } from "/@/store/db";
+import {
+  WEB_ACCESS_TOKEN_KEY,
+  WEB_REFRESH_TOKEN_KEY,
+} from "/@/config/StoreConfig";
 
 /**
  * 用户名密码登录
@@ -37,8 +42,8 @@ export const refreshAccessToken = async () => {
   const userStore = useUnInstalledUserStore();
   if (
     userStore.getRefreshToken &&
-    !userStore.isRefreshTokenTimeout &&
-    userStore.isAccessTokenTimeout
+    !LocalStorage.isExpired(WEB_REFRESH_TOKEN_KEY) &&
+    LocalStorage.isExpired(WEB_ACCESS_TOKEN_KEY)
   ) {
     const accessToken = userStore.getAccessToken;
     const refreshToken = userStore.getRefreshToken;

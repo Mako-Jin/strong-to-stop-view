@@ -5,6 +5,11 @@ import { refreshAccessToken } from "/@/service/loginService";
 import { dynamicAddRoute } from "/@/service/routerService";
 import { PageNotFoundRouter } from "/@/router/routes";
 import { Router } from "vue-router";
+import { LocalStorage } from "/@/store/db";
+import {
+  WEB_ACCESS_TOKEN_KEY,
+  WEB_REFRESH_TOKEN_KEY,
+} from "/@/config/StoreConfig";
 
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
 
@@ -36,7 +41,10 @@ export function createPermissionGuard(router: Router) {
     /**
      * token过期
      */
-    if (!userStore.getAccessToken || userStore.isAccessTokenTimeout) {
+    if (
+      !userStore.getAccessToken ||
+      LocalStorage.isExpired(WEB_ACCESS_TOKEN_KEY)
+    ) {
       /**
        * 需要刷新一次token
        */
@@ -75,7 +83,11 @@ export function createPermissionGuard(router: Router) {
  */
 function toWhiteList(to, next) {
   if (whitePathList.includes(to.path as PageEnum)) {
-    if (to.path === LOGIN_PATH && !userStore.isAccessTokenTimeout) {
+    if (
+      to.path === LOGIN_PATH &&
+      userStore.getAccessToken &&
+      !LocalStorage.isExpired(WEB_ACCESS_TOKEN_KEY)
+    ) {
       next((to.query?.redirect as string) || "/");
       return true;
     }
@@ -89,7 +101,10 @@ function toWhiteList(to, next) {
  * token过期
  */
 function refreshTokenExpired(to, next) {
-  if (!userStore.getRefreshToken || userStore.isRefreshTokenTimeout) {
+  if (
+    !userStore.getRefreshToken ||
+    LocalStorage.isExpired(WEB_REFRESH_TOKEN_KEY)
+  ) {
     const redirectData: {
       path: string;
       replace: boolean;

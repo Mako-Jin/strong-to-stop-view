@@ -51,12 +51,6 @@ export const useInstalledUserStore = defineStore({
     getRoleList(): RoleState[] {
       return LocalStorage.get(ROLES_LIST_INFO_KEY, this.roleList);
     },
-    isAccessTokenTimeout(): boolean {
-      return LocalStorage.isExpired(WEB_ACCESS_TOKEN_KEY);
-    },
-    isRefreshTokenTimeout(): boolean {
-      return LocalStorage.isExpired(WEB_REFRESH_TOKEN_KEY);
-    },
   },
   actions: {
     setAccessToken(accessToken: string) {
