@@ -34,7 +34,7 @@ export class WebStorage {
   }
 
   /**
-   *Read cache
+   * 读取数据
    * @param {string} key
    * @memberof Cache
    */
@@ -45,18 +45,36 @@ export class WebStorage {
         return defaultValue;
       }
       const data = JSON.parse(val);
-      const { value, expirationTime } = data;
-      if (expirationTime < 0 || expirationTime >= new Date().getTime()) {
-        return value;
-      }
-      this.remove(key);
+      const { value } = data;
+      return value;
     } catch (e) {
       return defaultValue;
     }
   }
 
   /**
-   * Delete cache based on key
+   * 判断存储值是否过期
+   * @param key
+   */
+  isExpired(key: string): boolean {
+    try {
+      const val = this.storage.getItem(this.getKey(key));
+      if (!val) {
+        return true;
+      }
+      const data = JSON.parse(val);
+      const { expirationTime } = data;
+      if (expirationTime < 0 || expirationTime >= new Date().getTime()) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return true;
+    }
+  }
+
+  /**
+   * 移除
    * @param {string} key
    * @memberof Cache
    */

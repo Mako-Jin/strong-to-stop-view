@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { ErrorRoutes } from "./modules/error";
 import { PageEnum } from "/@/enums/PageEnums";
 import { Layout } from "/@/layouts";
 
@@ -61,6 +62,7 @@ export const routes: RouteRecordRaw[] = [
   LoginRouter,
   HomeRouter,
   DefaultHomeRouter,
+  ...ErrorRoutes,
   PageNotFoundRouter,
 ];
 

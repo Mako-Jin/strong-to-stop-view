@@ -1,8 +1,9 @@
-import { AuthTypeEnum } from "../enums/LoginEnums";
-import { ResultModel } from "../model/HttpModel";
-import { useUnInstalledUserStore } from "../store/modules/userStore";
+import { AuthTypeEnum } from "/@/enums/LoginEnums";
+import { ResultModel } from "/@/model/HttpModel";
+import { useUnInstalledUserStore } from "/@/store/modules/userStore";
+import { dynamicAddRoute } from "./routerService";
 import { getUserInfo } from "./userService";
-import { loginApi } from "/@/apis/loginApi";
+import { loginApi, refreshTokenApi } from "/@/apis/loginApi";
 import { LoginModel } from "/@/model/UserModel";
 
 /**
@@ -25,6 +26,24 @@ export const loginByUsernamePassword = async (loginParams: LoginModel) => {
   userStore.setRefreshToken(refreshToken);
   const userInfo = await getUserInfo();
   if (userInfo) {
-    return userInfo;
+    dynamicAddRoute();
+  }
+};
+
+/**
+ * 刷新token
+ */
+export const refreshAccessToken = async () => {
+  const userStore = useUnInstalledUserStore();
+  if (
+    userStore.getRefreshToken &&
+    !userStore.isRefreshTokenTimeout &&
+    userStore.isAccessTokenTimeout
+  ) {
+    const accessToken = userStore.getAccessToken;
+    const refreshToken = userStore.getRefreshToken;
+    const res = await refreshTokenApi({ accessToken, refreshToken });
+    userStore.setAccessToken(res[0].accessToken);
+    userStore.setRefreshToken(res[0].refreshToken);
   }
 };

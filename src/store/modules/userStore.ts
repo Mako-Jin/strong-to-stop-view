@@ -51,23 +51,29 @@ export const useInstalledUserStore = defineStore({
     getRoleList(): RoleState[] {
       return LocalStorage.get(ROLES_LIST_INFO_KEY, this.roleList);
     },
+    isAccessTokenTimeout(): boolean {
+      return LocalStorage.isExpired(WEB_ACCESS_TOKEN_KEY);
+    },
+    isRefreshTokenTimeout(): boolean {
+      return LocalStorage.isExpired(WEB_REFRESH_TOKEN_KEY);
+    },
   },
   actions: {
     setAccessToken(accessToken: string) {
       this.accessToken = accessToken;
-      LocalStorage.set(WEB_ACCESS_TOKEN_KEY, accessToken, 28 * 60);
+      LocalStorage.set(WEB_ACCESS_TOKEN_KEY, accessToken, 29 * 60);
     },
     setRefreshToken(refreshToken: string) {
       this.refreshToken = refreshToken;
-      LocalStorage.set(WEB_REFRESH_TOKEN_KEY, refreshToken);
+      LocalStorage.set(WEB_REFRESH_TOKEN_KEY, refreshToken, 2 * 60 * 60);
     },
     setUserInfo(userInfo: UserModel) {
       this.userInfo = userInfo;
-      LocalStorage.set(USER_INFO_KEY, userInfo, 28 * 60);
+      LocalStorage.set(USER_INFO_KEY, userInfo, 30 * 60);
     },
     setRoleList(roleList: RoleState[]) {
       this.roleList = roleList;
-      LocalStorage.set(ROLES_LIST_INFO_KEY, roleList, 28 * 60);
+      LocalStorage.set(ROLES_LIST_INFO_KEY, roleList, 30 * 60);
     },
   },
 });

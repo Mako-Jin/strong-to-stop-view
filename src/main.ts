@@ -10,8 +10,9 @@ import { registerGlobComponents } from "/@/components";
 import i18n from "/@/locales";
 
 import { router } from "/@/router";
+import { setupRouterGuard } from "/@/router/guard";
 
-import Antd from "ant-design-vue";
+import Antd, { message } from "ant-design-vue";
 
 const app = createApp(App);
 
@@ -27,7 +28,14 @@ app.use(i18n);
 // 全局加载router
 app.use(router);
 
+// 路由守卫
+setupRouterGuard(router);
+
 // 全局引入ant-design-vue
 app.use(Antd);
+
+message.config({
+  maxCount: 1,
+});
 
 app.mount("#app");

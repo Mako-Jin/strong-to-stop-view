@@ -254,9 +254,6 @@ class HttpRequest {
       case 20:
         errorMessage = this.t("http.error.timeout");
         break;
-      case 401:
-        errorMessage = "认证异常";
-        break;
       default:
         errorMessage = this.t("http.error.unknown");
         break;

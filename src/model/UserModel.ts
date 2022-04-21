@@ -16,6 +16,11 @@ export interface UserModel {
   roles?: RoleModel[];
 }
 
+export interface TokenModel {
+  accessToken: string;
+  refreshToken: string;
+}
+
 export interface UserState {
   userInfo: UserModel | null;
   accessToken: string;
