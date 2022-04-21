@@ -1,8 +1,8 @@
 <template>
   <a-result
-    status="404"
-    title="404"
-    sub-title="Sorry, the page you visited does not exist."
+    status="403"
+    title="403"
+    sub-title="Sorry, you are not authorized to access this page."
   >
     <template #extra>
       <a-button type="primary">Back Home</a-button>
@@ -14,7 +14,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "404",
+  name: "403",
   components: {},
   setup() {
     return {};

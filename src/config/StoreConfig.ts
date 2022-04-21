@@ -14,6 +14,16 @@ export const DEFAULT_STORAGE_VALIDITY_PERIOD = 60 * 60 * 24 * 7;
 export const SIDE_MENU_COLLAPSED_KEY = "Side_Menu_Collapsed";
 
 /**
+ * 菜单栏开启状态记录
+ */
+export const SIDE_MENU_OPEN_KEYS_KEY = "Side_Menu_Open_Keys";
+
+/**
+ * 菜单栏选中状态记录
+ */
+export const SIDE_MENU_SELECTED_KEYS_KEY = "Side_Menu_Selected_Keys";
+
+/**
  * 菜单列表数据来源
  */
 export const MENU_LIST_COME_FROM_KEY = "Menu_List_Come_from";

@@ -8,6 +8,10 @@ export function useMenuSetting() {
   const getCollapsed = computed(() => menuStore.getCollapsed);
   // 菜单数据来源
   const getMenuSource = computed(() => menuStore.getMenuSource);
+  // 菜单选中状态
+  const getSelectedKeys = computed(() => menuStore.getSelectedKeys);
+  // 菜单折叠状态
+  const getOpenKeys = computed(() => menuStore.getOpenKeys);
 
   const setCollapsed = (collapsed: boolean) =>
     menuStore.setCollapsed(collapsed);
@@ -22,6 +26,8 @@ export function useMenuSetting() {
   return {
     getCollapsed,
     getMenuSource,
+    getOpenKeys,
+    getSelectedKeys,
 
     toggleCollapsed,
     setMenuSource,

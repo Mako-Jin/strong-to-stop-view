@@ -1,5 +1,12 @@
 <template>
-  <a-menu :mode="menuMode" :theme="theme">
+  <a-menu
+    :selectedKeys="getSelectedKeys"
+    :mode="menuMode"
+    :theme="theme"
+    :open-keys="getOpenKeys"
+    @open-change="onOpenChange"
+    @click="selectMenu"
+  >
     <template v-for="item in routes" :key="item.path">
       <template v-if="menuHasOneChildren(item) && !item.meta.hidden">
         <sts-menu-item :menu="item.children[0]" :onlyShowIcon="onlyShowIcon" />
@@ -23,6 +30,8 @@ import { ThemeType } from "/@/enums/ThemeEnums";
 import StsSubMenu from "./SubMenu/index.vue";
 import StsMenuItem from "./MenuItem/index.vue";
 import { RouteRecordRaw } from "vue-router";
+import { useInstalledMenuStore } from "/@/store/modules/menuStore";
+import { useMenuSetting } from "/@/hooks/useMenuSetting";
 
 export default defineComponent({
   name: "StsLayoutMenu",
@@ -53,6 +62,8 @@ export default defineComponent({
     },
   },
   setup() {
+    const menuStore = useInstalledMenuStore();
+
     const menuHasOneChildren = (menu: RouteRecordRaw): boolean => {
       if (!menu.children) {
         return false;
@@ -61,8 +72,25 @@ export default defineComponent({
       return !(childrenList.length > 1);
     };
 
+    const { getSelectedKeys, getOpenKeys } = useMenuSetting();
+
+    const selectMenu = ({ key }: { key: string }) => {
+      menuStore.setSelectedKeys([key]);
+    };
+
+    /**
+     * SubMenu 展开/关闭的回调
+     */
+    const onOpenChange = (openKeys: string[]) => {
+      menuStore.setOpenKeys(openKeys);
+    };
+
     return {
       menuHasOneChildren,
+      getSelectedKeys,
+      getOpenKeys,
+      onOpenChange,
+      selectMenu,
     };
   },
 });

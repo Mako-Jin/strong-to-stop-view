@@ -1,9 +1,5 @@
 <template>
-  <a-result
-    status="404"
-    title="404"
-    sub-title="Sorry, the page you visited does not exist."
-  >
+  <a-result status="401" title="401" sub-title="Sorry, you are not sign in.">
     <template #extra>
       <a-button type="primary">Back Home</a-button>
     </template>
@@ -14,7 +10,7 @@
 import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: "404",
+  name: "",
   components: {},
   setup() {
     return {};
