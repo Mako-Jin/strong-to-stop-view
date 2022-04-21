@@ -1,4 +1,5 @@
 import "virtual:svg-icons-register";
+import "/@/styles/index.less";
 // ant-design-vue 基础样式
 import "ant-design-vue/dist/antd.less";
 
