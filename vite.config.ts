@@ -4,7 +4,6 @@ import { resolve } from "path";
 import pkg from "./package.json";
 import dayjs from "dayjs";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-import { transformWrapperEnv } from "./src/utils/EnvUtils";
 
 const root = process.cwd();
 
@@ -14,9 +13,8 @@ const { dependencies, devDependencies, name, version } = pkg;
 
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv): UserConfig => {
-  const env = transformWrapperEnv(loadEnv(mode, root));
   const { VITE_PORT, VITE_PUBLIC_PATH, VITE_OUTPUT_DIR, VITE_DROP_CONSOLE } =
-    env;
+    loadEnv(mode, root);
 
   return {
     // 项目根目录（index.html 文件所在的位置）。可以是一个绝对路径，或者一个相对于该配置文件本身的相对路径。
@@ -35,25 +33,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     resolve: {
       alias: resolveAlias,
     },
-    server: {
-      host: true, // 指定服务器应该监听哪个 IP 地址。 如果将此设置为 0.0.0.0 或者 true 将监听所有地址，包括局域网和公网地址。
-      port: VITE_PORT,
-      strictPort: true, // 设为 true 时若端口已被占用则会直接退出，而不是尝试下一个可用端口。
-      // Load proxy configuration from .env
-      proxy: {
-        "/sts-admin": {
-          target: "http://localhost:36800",
-          changeOrigin: true,
-          ws: false,
-          rewrite: (path) => path.replace("^/sts-admin", "sts-admin"),
-          secure: false,
-        },
-      },
-      // 设置 server.hmr.overlay 为 false 可以禁用服务器错误遮罩层
-      hmr: {
-        overlay: true,
-      },
-    },
+    server: getServer(Number(VITE_PORT)),
     esbuild: {
       pure: VITE_DROP_CONSOLE ? ["console.log", "debugger"] : [],
     },
@@ -104,6 +84,28 @@ const resolveAlias = [
     replacement: pathResolve("src") + "/",
   },
 ];
+
+const getServer = (VITE_PORT: number) => {
+  return {
+    host: true, // 指定服务器应该监听哪个 IP 地址。 如果将此设置为 0.0.0.0 或者 true 将监听所有地址，包括局域网和公网地址。
+    port: VITE_PORT,
+    strictPort: true, // 设为 true 时若端口已被占用则会直接退出，而不是尝试下一个可用端口。
+    // Load proxy configuration from .env
+    proxy: {
+      "/sts-admin": {
+        target: "http://localhost:36800",
+        changeOrigin: true,
+        ws: false,
+        rewrite: (path) => path.replace("^/sts-admin", "sts-admin"),
+        secure: false,
+      },
+    },
+    // 设置 server.hmr.overlay 为 false 可以禁用服务器错误遮罩层
+    hmr: {
+      overlay: true,
+    },
+  };
+};
 
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, name, version },

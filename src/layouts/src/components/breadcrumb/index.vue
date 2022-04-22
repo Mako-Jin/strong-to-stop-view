@@ -18,7 +18,6 @@
 <script lang="ts">
 import { defineComponent, PropType, ref, watchEffect } from "vue";
 import { RouteLocationMatched, RouteRecordRaw, useRouter } from "vue-router";
-import { filter } from "/@/utils/TreeUtils";
 
 export default defineComponent({
   name: "LayoutBreadcrumb",
@@ -43,15 +42,7 @@ export default defineComponent({
         return;
       }
 
-      const breadcrumbList = filterItem(matched);
-
-      if (currentRoute.value.meta?.currentActiveMenu) {
-        breadcrumbList.push({
-          ...currentRoute.value,
-          name: currentRoute.value.meta?.title || currentRoute.value.name,
-        } as unknown as RouteLocationMatched);
-      }
-      routes.value = breadcrumbList;
+      routes.value = matched.filter((item) => !item.meta?.hideBreadcrumb);
     });
 
     function getMatched(menus: RouteRecordRaw[], parent: string[]) {
@@ -65,20 +56,6 @@ export default defineComponent({
         }
       });
       return matchedMenu;
-    }
-
-    function filterItem(list: RouteLocationMatched[]) {
-      return filter(list, (item) => {
-        const { meta, name } = item;
-        if (!meta) {
-          return !!name;
-        }
-        const { title, hideBreadcrumb, hideMenu } = meta;
-        if (!title || hideBreadcrumb || hideMenu) {
-          return false;
-        }
-        return true;
-      }).filter((item) => !item.meta?.hideBreadcrumb);
     }
 
     function hasRedirect(
