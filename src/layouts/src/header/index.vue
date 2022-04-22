@@ -4,6 +4,11 @@
       <sts-sider-trigger />
       <layout-breadcrumb :menus="menus" />
     </div>
+    <div class="sts-layout-header-right">
+      <locale-switch />
+      <user-dropdown />
+      <setting-drawer />
+    </div>
   </a-layout-header>
 </template>
 
@@ -11,6 +16,9 @@
 import { defineComponent, PropType } from "vue";
 import StsSiderTrigger from "../components/trigger/index.vue";
 import LayoutBreadcrumb from "../components/breadcrumb/index.vue";
+import LocaleSwitch from "../components/locale/index.vue";
+import UserDropdown from "../components/dropdown/index.vue";
+import SettingDrawer from "../components/setting/index.vue";
 import { RouteRecordRaw } from "vue-router";
 
 export default defineComponent({
@@ -18,6 +26,9 @@ export default defineComponent({
   components: {
     StsSiderTrigger,
     LayoutBreadcrumb,
+    LocaleSwitch,
+    UserDropdown,
+    SettingDrawer,
   },
   props: {
     menus: {

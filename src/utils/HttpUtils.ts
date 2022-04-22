@@ -140,7 +140,6 @@ class HttpRequest {
     url = this.preHandleUrl(url);
     let opt = {
       method: RequestMethodEnum.POST,
-      // credentials: "include",
       headers: {
         "Content-Type": ContentTypeEnum.JSON,
         smk_Authorization: this.getAccessToken(withToken),
@@ -219,7 +218,25 @@ class HttpRequest {
   /**
    * 下载
    */
-  // async DOWNLOAD() {}
+  async DOWNLOAD<P = {}>(
+    url: string,
+    params?: P,
+    options?: RequestInit,
+    withToken = true
+  ) {
+    const urlAddress = this.preHandleParam(this.preHandleUrl(url), params);
+    let opt = {
+      method: RequestMethodEnum.GET,
+      headers: {
+        smk_Authorization: this.getAccessToken(withToken),
+      },
+    };
+    opt = Object.assign(opt, options);
+    const response = await fetch(urlAddress, opt).then((response) => {
+      return response.blob();
+    });
+    return response;
+  }
 
   /**
    * form表单

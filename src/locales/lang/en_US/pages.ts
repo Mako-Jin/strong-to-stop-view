@@ -10,4 +10,15 @@ export default {
       login_button: "Sign in",
     },
   },
+  layout: {
+    header: {
+      dropdown: {
+        profile: "profile",
+        logout: "Logout",
+      },
+      setting: {
+        title: "setting",
+      },
+    },
+  },
 };

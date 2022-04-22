@@ -10,4 +10,15 @@ export default {
       login_button: "登录",
     },
   },
+  layout: {
+    header: {
+      dropdown: {
+        profile: "用户中心",
+        logout: "退出登录",
+      },
+      setting: {
+        title: "配置中心",
+      },
+    },
+  },
 };
