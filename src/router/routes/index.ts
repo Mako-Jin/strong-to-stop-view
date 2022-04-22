@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
-import { ErrorRoutes } from "./modules/error";
+import ErrorRoutes from "./modules/common/error";
+import DefaultHomeRouter from "./modules/common/home";
 import { PageEnum } from "/@/enums/PageEnums";
 import { Layout } from "/@/layouts";
 
@@ -30,29 +31,27 @@ export const LoginRouter: RouteRecordRaw = {
 };
 
 /**
- * 默认首页
- */
-export const DefaultHomeRouter: RouteRecordRaw = {
-  path: "/index",
-  name: "DefaultHome",
-  component: Layout,
-  meta: {
-    title: "默认首页",
-    icon: "home",
-  },
-};
-
-/**
  * 页面找不到找不到 404
  */
 export const PageNotFoundRouter: RouteRecordRaw = {
   path: "/:path(.*)*",
-  name: "404",
-  component: () => import("/@/views/error/404.vue"),
+  name: "PageNotFound",
+  component: Layout,
   meta: {
-    title: "ErrorPage",
+    title: "404",
     hidden: true,
   },
+  children: [
+    {
+      path: "/:path(.*)*",
+      name: "PageNotFound",
+      component: () => import("/@/views/error/404.vue"),
+      meta: {
+        title: "404",
+        hidden: true,
+      },
+    },
+  ],
 };
 
 /**

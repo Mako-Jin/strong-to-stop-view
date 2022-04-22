@@ -1,10 +1,10 @@
 <template>
-  <a-layout>
+  <a-layout has-sider>
     <!-- 侧边菜单栏 -->
     <sts-layout-sider :menus="menus" />
     <a-layout>
       <!-- 头部 -->
-      <sts-layout-header />
+      <sts-layout-header :menus="menus" />
       <!-- 主体内容 -->
       <sts-layout-content />
       <!-- 脚部 -->

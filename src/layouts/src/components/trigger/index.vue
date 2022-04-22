@@ -26,8 +26,8 @@ export default defineComponent({
 <style lang="less">
 .trigger {
   font-size: 18px;
-  line-height: 64px;
-  padding: 0 24px;
+  line-height: 1.5715;
+  padding: 0 15px;
   cursor: pointer;
   transition: color 0.3s;
 }

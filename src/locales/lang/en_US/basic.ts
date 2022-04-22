@@ -9,5 +9,6 @@ export default {
     delete: "Delete",
     edit: "Edit",
     data_import: "Data Import",
+    location: "Location:",
   },
 };

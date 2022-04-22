@@ -6,6 +6,7 @@ const SystemRouter: RouteRecordRaw = {
   path: "/system",
   name: "System",
   component: Layout,
+  redirect: "/system/user",
   meta: {
     title: "system.title",
     icon: "setting",

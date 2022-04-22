@@ -9,5 +9,6 @@ export default {
     delete: "删除",
     edit: "编辑",
     data_import: "数据导入",
+    location: "当前位置：",
   },
 };
