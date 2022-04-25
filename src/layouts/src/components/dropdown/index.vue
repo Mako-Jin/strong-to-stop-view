@@ -26,7 +26,7 @@
 import { defineComponent, ref } from "vue";
 import { useInstalledUserStore } from "/@/store/modules/userStore";
 import DefaultAvatar from "/@/assets/images/avatar.jpg";
-import { preview } from "/@/apis/fileApi";
+import { getPreviewImage } from "/@/service/fileService";
 
 export default defineComponent({
   name: "UserDropdown",
@@ -37,22 +37,14 @@ export default defineComponent({
 
     const avatar = ref<string>();
 
-    const getAvatar = async (catalogId: string) => {
-      const result = await preview(catalogId).then((res) => {
-        return res;
-      });
-      const avatarUrl = URL.createObjectURL(result);
-      if (avatarUrl) {
-        avatar.value = avatarUrl;
-      }
-    };
-
-    getAvatar(userInfo.avatar);
+    getPreviewImage(userInfo.avatar).then((res) => {
+      avatar.value = res;
+    });
 
     return {
       userInfo,
-      avatar,
       DefaultAvatar,
+      avatar,
     };
   },
 });

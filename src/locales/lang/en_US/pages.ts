@@ -21,4 +21,9 @@ export default {
       },
     },
   },
+  user: {
+    button: {
+      create: "Create User",
+    },
+  },
 };

@@ -14,6 +14,15 @@ const SystemRouter: RouteRecordRaw = {
   },
   children: [
     {
+      path: "dept",
+      name: "DeptMgr",
+      meta: {
+        title: "system.dept.title",
+        position: MenuPosition.SIDER,
+      },
+      component: () => import("/@/views/system/dept/index.vue"),
+    },
+    {
       path: "user",
       name: "UserMgr",
       meta: {

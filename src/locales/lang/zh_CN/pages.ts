@@ -21,4 +21,9 @@ export default {
       },
     },
   },
+  user: {
+    button: {
+      create: "新增用户",
+    },
+  },
 };

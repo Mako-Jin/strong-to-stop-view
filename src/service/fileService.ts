@@ -1,8 +1,13 @@
-const baseURL = import.meta.env.VITE_REST_BASE_URL;
+import { preview } from "/@/apis/fileApi";
 
-export const getPreviewImage = (catalogId: string) => {
-  if (!catalogId) {
-    catalogId = "default-image-catalog-id";
-  }
-  return `${baseURL}${"transfer/v1/preview/"}${catalogId}${"?_t="}${new Date().getTime()}`;
-};
+/**
+ * 转换后端的字节流为缓存地址
+ * @param catalogId
+ */
+export async function getPreviewImage(catalogId: string): Promise<string> {
+  const result = await preview(catalogId).then((res) => {
+    return res;
+  });
+  const imgUrl = URL.createObjectURL(result);
+  return imgUrl;
+}
