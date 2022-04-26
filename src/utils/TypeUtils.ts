@@ -37,3 +37,26 @@ export function isUrl(path: string): boolean {
     /(((^https?:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
   return reg.test(path);
 }
+
+export function isEmail(email: string): boolean {
+  const reg =
+    /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
+  return reg.test(email);
+}
+
+export function isPhoneNum(phone: string): boolean {
+  const reg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+  return reg.test(phone);
+}
+
+export function fileIsImage(type: string): boolean {
+  if (type === "image/jpeg" || type === "image/png") {
+    return true;
+  }
+  return false;
+}
+
+export function checkChineseSymbol(value: string): boolean {
+  const reg = /[^\x00-\xff]/g;
+  return reg.test(value);
+}

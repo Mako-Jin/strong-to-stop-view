@@ -4,6 +4,9 @@ export default {
   },
   system: {
     title: "System Management",
+    dept: {
+      title: "Dept Management",
+    },
     user: {
       title: "User Management",
     },

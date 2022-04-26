@@ -77,7 +77,7 @@ module.exports = defineConfig({
     indent: "off", // 强制使用一致的缩进
     "jsx-quotes": "warn", // 强制在 JSX 属性中一致地使用双引号或单引号
     "max-depth": "warn", // 强制可嵌套的块的最大深度4
-    "max-lines": ["warn", { max: 800 }], // 强制最大行数 300
+    "max-lines": ["warn", { max: 500 }], // 强制最大行数 500
     "max-lines-per-function": ["warn", { max: 80 }], // 强制函数最大代码行数 50
     "max-statements": ["warn", 30], // 强制函数块最多允许的的语句数量20
     "max-nested-callbacks": ["warn", 3], // 强制回调函数最大嵌套深度
@@ -92,7 +92,7 @@ module.exports = defineConfig({
     // "space-before-function-paren": ["warn", "never"], // 强制在function的左括号之前使用一致的空格
     "space-in-parens": "warn", // 强制在圆括号内使用一致的空格
     "space-infix-ops": "warn", // 要求操作符周围有空格
-    "space-unary-ops": "warn", // 强制在一元操作符前后使用一致的空格
+    // "space-unary-ops": "warn", // 强制在一元操作符前后使用一致的空格
     "spaced-comment": "warn", // 强制在注释中 // 或 /* 使用一致的空格
     "switch-colon-spacing": "warn", // 强制在 switch 的冒号左右有空格
     "arrow-spacing": "warn", // 强制箭头函数的箭头前后使用一致的空格

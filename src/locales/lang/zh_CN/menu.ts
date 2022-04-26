@@ -4,6 +4,9 @@ export default {
   },
   system: {
     title: "系统管理",
+    dept: {
+      title: "部门管理",
+    },
     user: {
       title: "用户管理",
     },
@@ -12,9 +15,6 @@ export default {
     },
     role: {
       title: "角色管理",
-    },
-    dept: {
-      title: "部门管理",
     },
   },
   tools: {

@@ -6,7 +6,7 @@
         class="editable-add-btn"
         type="primary"
         style="margin: 8px"
-        @click="addUserModalVisible = true"
+        @click="state.addUserModalVisible = true"
       >
         <template #icon>
           <svg-icon name="user-add" style="margin-right: 8px" />
@@ -31,12 +31,17 @@
       @show-edit-user-drawer="showEditUserDrawer"
     />
   </a-page-header>
+  <add-user-modal
+    v-model:visible="state.addUserModalVisible"
+    @create-user="createUser"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
 import UserSearchForm from "./searchForm/index.vue";
 import UserTable from "./table/index.vue";
+import AddUserModal from "./add/index.vue";
 import { deleteUserByUserId, getUserPageList, saveUser } from "/@/apis/userApi";
 import { UserModel } from "/@/model/UserModel";
 import { DefaultPagination } from "/@/config/CommonConfig";
@@ -47,6 +52,7 @@ export default defineComponent({
   components: {
     UserSearchForm,
     UserTable,
+    AddUserModal,
   },
   setup() {
     const state = reactive({
@@ -94,20 +100,15 @@ export default defineComponent({
     };
 
     const createUser = async (user: UserModel) => {
-      await saveUser(user).then((res) => {
-        if (res.code === 320000) {
-          state.addUserModalVisible = false;
-          getUserDataList();
-        }
+      await saveUser(user).then(() => {
+        state.addUserModalVisible = false;
+        getUserDataList();
       });
     };
 
     const onDeleteUserByUserId = async (userId: string) => {
-      await deleteUserByUserId(userId).then((res) => {
-        if (res.code === 320000) {
-          getUserDataList();
-        }
-      });
+      await deleteUserByUserId(userId);
+      getUserDataList();
     };
 
     const showEditUserDrawer = (userId: string) => {

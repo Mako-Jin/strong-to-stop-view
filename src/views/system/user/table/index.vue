@@ -128,4 +128,8 @@ const userTableColumns = [
 ];
 </script>
 
-<style lang="less"></style>
+<style lang="less" scoped>
+.ant-table-striped :deep(.table-striped) td {
+  background-color: #fafafa;
+}
+</style>

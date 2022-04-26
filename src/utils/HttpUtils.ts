@@ -203,7 +203,7 @@ class HttpRequest {
     options?: RequestInit,
     withToken = true
   ) {
-    url = this.preHandleUrl(url);
+    const urlAddress = this.preHandleUrl(url);
     let opt = {
       method: RequestMethodEnum.POST,
       headers: {
@@ -212,7 +212,10 @@ class HttpRequest {
       body: this.wrapFormData(params),
     };
     opt = Object.assign(opt, options);
-    return this.toFetch(url, opt);
+    const response = await fetch(urlAddress, opt).then((response) => {
+      return response.json();
+    });
+    return response;
   }
 
   /**

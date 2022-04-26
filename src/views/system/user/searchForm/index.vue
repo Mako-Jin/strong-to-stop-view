@@ -1,11 +1,16 @@
 <template>
-  <a-form name="advanced_search" :model="formState" @finish="onFinish">
+  <a-form
+    ref="formRef"
+    name="advanced_search"
+    :model="formState"
+    @finish="$emit('filterTableData', $event)"
+  >
     <a-row :gutter="24" style="margin: 0">
       <a-col v-for="item in userSearch" :key="item.name" :span="8">
-        <a-form-item :name="item.name" :label="item.label">
+        <a-form-item :name="item.name" :label="$t(item.label)">
           <a-input
             v-model:value="formState[item.name]"
-            :placeholder="item.placeholder"
+            :placeholder="$t(item.placeholder)"
           />
         </a-form-item>
       </a-col>
@@ -22,39 +27,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { FormInstance } from "ant-design-vue";
+import { defineComponent, reactive, ref } from "vue";
 
 export default defineComponent({
   name: "UserSearchForm",
   components: {},
   props: {},
   emits: ["filterTableData"],
-  setup(props, { emit }) {
+  setup() {
+    const formRef = ref<FormInstance>();
     const formState = reactive({});
 
-    const onFinish = () => {
-      emit("filterTableData", formState);
-    };
-
     return {
+      formRef,
       formState,
       userSearch,
-
-      onFinish,
     };
   },
 });
 
 const userSearch = [
   {
-    name: "userName",
-    label: "用户名",
-    placeholder: "请输入用户名",
+    name: "username",
+    label: "user.form.username",
+    placeholder: "user.form.username_placeholder",
   },
   {
     name: "phoneNum",
-    label: "手机号码",
-    placeholder: "请输入手机号",
+    label: "user.form.phoneNum",
+    placeholder: "user.form.phoneNum_placeholder",
   },
 ];
 </script>
