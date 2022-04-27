@@ -35,6 +35,21 @@
     v-model:visible="state.addUserModalVisible"
     @create-user="createUser"
   />
+  <suspense>
+    <template #default>
+      <edit-user-drawer
+        v-if="state.editUserDrawerVisible"
+        v-model:visible="state.editUserDrawerVisible"
+        :userId="state.userId"
+        @update-user="updateUser"
+      />
+    </template>
+    <template #fallback>
+      <div>
+        <h3>{{ $t("common.loading") }}</h3>
+      </div>
+    </template>
+  </suspense>
 </template>
 
 <script lang="ts">
@@ -42,7 +57,13 @@ import { defineComponent, reactive } from "vue";
 import UserSearchForm from "./searchForm/index.vue";
 import UserTable from "./table/index.vue";
 import AddUserModal from "./add/index.vue";
-import { deleteUserByUserId, getUserPageList, saveUser } from "/@/apis/userApi";
+import EditUserDrawer from "./edit/index.vue";
+import {
+  deleteUserByUserId,
+  getUserPageList,
+  saveUser,
+  updateUserByUserId,
+} from "/@/apis/userApi";
 import { UserModel } from "/@/model/UserModel";
 import { DefaultPagination } from "/@/config/CommonConfig";
 import { getPreviewImage } from "/@/service/fileService";
@@ -53,6 +74,7 @@ export default defineComponent({
     UserSearchForm,
     UserTable,
     AddUserModal,
+    EditUserDrawer,
   },
   setup() {
     const state = reactive({
@@ -116,6 +138,13 @@ export default defineComponent({
       state.editUserDrawerVisible = true;
     };
 
+    const updateUser = async (user: UserModel) => {
+      await updateUserByUserId(user).then(() => {
+        state.editUserDrawerVisible = false;
+        getUserDataList();
+      });
+    };
+
     return {
       state,
       switchPage,
@@ -123,6 +152,7 @@ export default defineComponent({
       createUser,
       onDeleteUserByUserId,
       showEditUserDrawer,
+      updateUser,
     };
   },
 });

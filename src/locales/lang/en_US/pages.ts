@@ -49,6 +49,12 @@ export default {
         email_check: "Please input correct email address.",
       },
     },
+    edit: {
+      title: "Update User Info",
+      form: {
+        base_info: "Base Info",
+      },
+    },
     button: {
       create: "Create User",
     },

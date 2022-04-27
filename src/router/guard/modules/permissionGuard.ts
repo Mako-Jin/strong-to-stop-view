@@ -48,7 +48,7 @@ export function createPermissionGuard(router: Router) {
       /**
        * 需要刷新一次token
        */
-      refreshAccessToken();
+      await refreshAccessToken();
     }
 
     /**
