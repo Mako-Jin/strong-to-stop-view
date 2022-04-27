@@ -8,7 +8,9 @@ export default {
     save: "Save",
     delete: "Delete",
     edit: "Edit",
+    cancel: "Cancel",
     data_import: "Data Import",
     location: "Location:",
+    loading: "Loading...",
   },
 };

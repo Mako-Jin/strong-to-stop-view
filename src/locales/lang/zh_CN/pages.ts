@@ -49,8 +49,19 @@ export default {
         email_check: "请输入正确的邮箱地址",
       },
     },
+    edit: {
+      title: "更新用户信息",
+      form: {
+        base_info: "基本信息",
+      },
+    },
     button: {
       create: "新增用户",
+    },
+  },
+  menu: {
+    button: {
+      create: "新增菜单",
     },
   },
 };
