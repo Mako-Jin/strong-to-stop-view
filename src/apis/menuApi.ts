@@ -31,3 +31,10 @@ export const saveMenu = (menu: MenuModel) => {
 export const getMenuIdsByRoleId = (roleId: string) => {
   return httpRequest.GET(`menuMgr/v1/getMenuIdsByRoleId/${roleId}`);
 };
+
+/**
+ * 根据menuId删除menu
+ */
+export const deleteMenuByMenuId = (menuId: string) => {
+  return httpRequest.DELETE(`/menuMgr/v1/deleteMenuByMenuId/${menuId}`);
+};

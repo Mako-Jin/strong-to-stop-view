@@ -7,8 +7,10 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'menuStatus'">
         <span>
-          <a-tag v-if="record.menuStatus == 1" color="green">启用</a-tag>
-          <a-tag v-else color="red">禁用</a-tag>
+          <a-tag v-if="record.menuStatus == 1" color="green">
+            {{ $t("common.enabled") }}
+          </a-tag>
+          <a-tag v-else color="red">{{ $t("common.disabled") }}</a-tag>
         </span>
       </template>
       <template v-if="column.key === 'action'">
@@ -16,7 +18,7 @@
           <a-button
             type="link"
             style="padding: 0"
-            @click="showEditDrawer(record.userId)"
+            @click="$emit('showEditMenuDrawer', record.menuId)"
           >
             {{ $t("common.edit") }}
           </a-button>
@@ -24,7 +26,7 @@
           <a-popconfirm
             v-if="dataSource.length"
             title="Sure to delete?"
-            @confirm="onDelete(record.userId)"
+            @confirm="$emit('onDeleteMenu', record.menuId)"
           >
             <a-button type="link" style="padding: 0">
               {{ $t("common.delete") }}
@@ -50,6 +52,7 @@ export default defineComponent({
       default: null,
     },
   },
+  emits: ["onDeleteMenu", "showEditMenuDrawer"],
   setup() {
     return {
       menuTableColumns,

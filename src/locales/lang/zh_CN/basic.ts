@@ -12,5 +12,8 @@ export default {
     data_import: "数据导入",
     location: "当前位置：",
     loading: "数据加载中……",
+    enabled: "启用",
+    disabled: "禁用",
+    select: "请选择",
   },
 };

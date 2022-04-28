@@ -12,5 +12,8 @@ export default {
     data_import: "Data Import",
     location: "Location:",
     loading: "Loading...",
+    enabled: "Enabled",
+    disabled: "Disabled",
+    select: "Please select",
   },
 };

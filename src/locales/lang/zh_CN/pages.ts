@@ -60,6 +60,10 @@ export default {
     },
   },
   menu: {
+    add: {
+      title: "新增菜单",
+      form: {},
+    },
     button: {
       create: "新增菜单",
     },

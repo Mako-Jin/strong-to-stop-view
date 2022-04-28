@@ -22,20 +22,29 @@
         {{ $t("common.data_import") }}
       </a-button>
     </div>
-    <menu-table :dataSource="menuTreeList" />
+    <menu-table
+      :dataSource="menuTreeList"
+      @on-delete-menu="onDeleteMenuByMenuId"
+    />
   </a-page-header>
+  <add-menu-modal
+    v-model:visible="addMenuModalVisible"
+    @create-menu="createMenu"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { getMenuTreeList, saveMenu } from "/@/apis/menuApi";
+import { deleteMenuByMenuId, getMenuTreeList, saveMenu } from "/@/apis/menuApi";
 import MenuTable from "./table/index.vue";
+import addMenuModal from "./add/index.vue";
 import { MenuModel } from "/@/model/MenuModel";
 
 export default defineComponent({
   name: "MenuMgr",
   components: {
     MenuTable,
+    addMenuModal,
   },
   setup() {
     const addMenuModalVisible = ref<boolean>(false);
@@ -57,12 +66,15 @@ export default defineComponent({
     getMenuDataList();
 
     const createMenu = async (menu: MenuModel) => {
-      await saveMenu(menu).then((res) => {
-        if (res.code === 320000) {
-          addMenuModalVisible.value = false;
-          getMenuDataList();
-        }
+      await saveMenu(menu).then(() => {
+        addMenuModalVisible.value = false;
+        getMenuDataList();
       });
+    };
+
+    const onDeleteMenuByMenuId = async (menuId: string) => {
+      await deleteMenuByMenuId(menuId);
+      getMenuDataList();
     };
 
     return {
@@ -70,6 +82,7 @@ export default defineComponent({
       addMenuModalVisible,
 
       createMenu,
+      onDeleteMenuByMenuId,
     };
   },
 });

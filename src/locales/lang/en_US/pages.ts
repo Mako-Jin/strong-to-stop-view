@@ -63,5 +63,9 @@ export default {
     button: {
       create: "Create Menu",
     },
+    add: {
+      title: "Create Menu",
+      form: {},
+    },
   },
 };
